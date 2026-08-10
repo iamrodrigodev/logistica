@@ -1,0 +1,1 @@
+java -jar .\logistica-read\target\logistica-read-0.0.1-SNAPSHOT.jar

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>pe.com.mcalderon</groupId>
+        <artifactId>logistica</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>logistica-write</artifactId>
+
+    <name>logistica-write</name>
+    <description>Runtime de comandos de logística</description>
+
+    <dependencies>
+
+        <!-- =====================================================
+             Módulos internos
+             ===================================================== -->
+
+        <dependency>
+            <groupId>pe.com.mcalderon</groupId>
+            <artifactId>logistica-domain</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pe.com.mcalderon</groupId>
+            <artifactId>logistica-application-write</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
+        <!-- =====================================================
+             Spring
+             ===================================================== -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+
+        <!-- =====================================================
+             Base de datos
+             ===================================================== -->
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+
+        <!-- =====================================================
+             Testing
+             ===================================================== -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <!-- =========================================================
+         Ejecutable Spring Boot
+         ========================================================= -->
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <configuration>
+                    <mainClass>
+                        pe.com.mcalderon.logistica.LogisticaWriteApplication
+                    </mainClass>
+                </configuration>
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.2</version>
+
+                <executions>
+                    <execution>
+                        <id>proteger-frontera-cqrs-write</id>
+
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+
+                        <configuration>
+                            <rules>
+
+                                <bannedDependencies>
+                                    <excludes>
+
+                                        <exclude>
+                                            pe.com.mcalderon:logistica-application-read
+                                        </exclude>
+
+                                        <exclude>
+                                            pe.com.mcalderon:logistica-read
+                                        </exclude>
+
+                                    </excludes>
+
+                                    <searchTransitive>true</searchTransitive>
+
+                                    <message>
+                                        VIOLACION ARQUITECTONICA CQRS:
+                                        logistica-write no puede depender de
+                                        logistica-application-read ni de logistica-read.
+                                    </message>
+
+                                </bannedDependencies>
+
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+
+
+</project>

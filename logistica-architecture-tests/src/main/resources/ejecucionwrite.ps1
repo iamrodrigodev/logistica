@@ -1,0 +1,1 @@
+java -jar .\logistica-write\target\logistica-write-0.0.1-SNAPSHOT.jar
